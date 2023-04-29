@@ -5,6 +5,12 @@ plugins {
     id 'war'
 }
 
+/*java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}*/
+
 repositories {
 
     mavenLocal()

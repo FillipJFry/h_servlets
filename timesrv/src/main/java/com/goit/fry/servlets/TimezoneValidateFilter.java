@@ -25,7 +25,9 @@ public class TimezoneValidateFilter extends HttpFilter {
 		}
 
 		TimeZone timezone = TimeZone.getTimeZone(timezoneStr);
-		if (!timezoneStr.equals("GMT") && timezone.equals(gmtZone)) {
+		if (!UTCHandler.presentUTCstr(timezoneStr) &&
+				!timezoneStr.equals("GMT") && timezone.equals(gmtZone)) {
+
 			resp.setContentType("text/html");
 			try (PrintWriter out = resp.getWriter()) {
 

@@ -28,8 +28,12 @@ public class TimeServlet extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		String timezoneStr = req.getParameter("timezone");
-		if (timezoneStr != null)
+		if (timezoneStr != null) {
+			timezoneStr = UTCHandler.replaceIfNecessary(timezoneStr);
 			dtFormat.setTimeZone(TimeZone.getTimeZone(timezoneStr));
+		}
+		else
+			dtFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
 		resp.setContentType("text/html");
 		try (PrintWriter out = resp.getWriter()) {
@@ -40,7 +44,8 @@ public class TimeServlet extends HttpServlet {
 			out.println("<title>Current UTC time</title>");
 			out.println("</head>");
 			out.println("<body>");
-			out.println("<p>" + dtFormat.format(new Date()) + " UTC</p>");
+			out.println("<p>" + dtFormat.format(new Date()) + ' ' +
+					(timezoneStr != null ? timezoneStr : "UTC") + "</p>");
 			out.println("</body>");
 			out.println("</html>");
 		}
